@@ -81,8 +81,16 @@ namespace ImageManager
             {
                 var ini = new INI(Application.StartupPath + "/config.ini");
                 mainPath = ini.Read("mainPath");
-
-                getTreeView();
+                if (File.Exists(mainPath))
+                {
+                    getTreeView();
+                }
+                else
+                {
+                    MessageBox.Show("No se puede acceder a la ruta de guardado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Form frmConfig = new Config();
+                    frmConfig.ShowDialog();
+                }
             }
             else
             {
