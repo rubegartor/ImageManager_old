@@ -81,7 +81,7 @@ namespace ImageManager
             {
                 var ini = new INI(Application.StartupPath + "/config.ini");
                 mainPath = ini.Read("mainPath");
-                if (File.Exists(mainPath))
+                if (Directory.Exists(mainPath))
                 {
                     getTreeView();
                 }
