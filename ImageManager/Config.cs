@@ -2,7 +2,6 @@
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Text.RegularExpressions;
 
 namespace ImageManager
 {
