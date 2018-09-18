@@ -2,13 +2,17 @@
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace ImageManager
 {
     public partial class Config : Form
     {
-        public Config()
+        Form _frm;
+
+        public Config(Form frm)
         {
+            _frm = frm;
             InitializeComponent();
         }
 
@@ -41,11 +45,10 @@ namespace ImageManager
             {
                 if(Directory.Exists(data.SelectedPath))
                 {
-                    if(data.SelectedPath.Length <= 3)
+                    Main frmMain = (Main)_frm;
+                    if (data.SelectedPath.Length <= 3)
                     {
                         string toWrite = data.SelectedPath.Substring(0, 2);
-                        Main frmMain = new Main();
-                        frmMain.mainPath = toWrite;
 
                         var ini = new INI(Application.StartupPath + "/config.ini");
                         ini.Write("mainPath", toWrite);
@@ -54,18 +57,15 @@ namespace ImageManager
                         setLabel("Ruta guardada con éxito", Color.Green);
 
                         frmMain.getTreeView();
-                    }
-                    else
-                    {
+                    } else {
                         string toWrite = data.SelectedPath;
-                        Main frmMain = new Main();
-                        frmMain.mainPath = toWrite;
 
                         var ini = new INI(Application.StartupPath + "/config.ini");
                         ini.Write("mainPath", toWrite);
                         textBox1.Text = toWrite;
 
                         setLabel("Ruta guardada con éxito", Color.Green);
+
                         frmMain.getTreeView();
                     }
                 }

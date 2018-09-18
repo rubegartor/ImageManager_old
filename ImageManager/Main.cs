@@ -13,17 +13,17 @@ namespace ImageManager
 {
     public partial class Main : Form
     {
-        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
-        private static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
-
-        public string mainPath = @"";
-
-        public string selectedPath;
-
         public Main()
         {
             InitializeComponent();
         }
+
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
+        private static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
+
+        public string mainPath = @"";
+        public string selectedPath;
+
 
         public static void alzheimer()
         {
@@ -40,14 +40,22 @@ namespace ImageManager
             }
         }
 
+        static string getMainPath()
+        {
+            var ini = new INI(Application.StartupPath + "/config.ini");
+            string mainPath = ini.Read("mainPath");
+            return mainPath;
+        }
+
         public void getTreeView()
         {
-            if (Directory.Exists(mainPath) == true)
+            mainPath = getMainPath();
+            if (Directory.Exists(mainPath))
             {
                 DirectoryInfo di = new DirectoryInfo(mainPath);
                 foreach (DirectoryInfo d in di.GetDirectories())
                 {
-                    treeView1.Nodes.Clear();
+                    treeView.Nodes.Clear();
                     string[] drives = Directory.GetDirectories(mainPath);
 
                     foreach (string drive in drives)
@@ -63,7 +71,7 @@ namespace ImageManager
                                 };
 
                                 node.Nodes.Add("...");
-                                treeView1.Nodes.Add(node);
+                                treeView.Nodes.Add(node);
                             }
                         }
                     }
@@ -71,7 +79,7 @@ namespace ImageManager
             }
             else
             {
-                treeView1.Nodes.Clear();
+                treeView.Nodes.Clear();
             }
         }
 
@@ -88,7 +96,7 @@ namespace ImageManager
                 else
                 {
                     MessageBox.Show("No se puede acceder a la ruta de guardado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Form frmConfig = new Config();
+                    Form frmConfig = new Config(this);
                     frmConfig.ShowDialog();
                 }
             }
@@ -99,7 +107,7 @@ namespace ImageManager
                 Application.Restart();
             }
         }
-        private void treeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             if (e.Node.Nodes.Count > 0)
             {
@@ -319,10 +327,10 @@ namespace ImageManager
 
         private void bgWrk1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            button6.Visible = false;
+            cancelBtn.Visible = false;
             if (Directory.Exists(mainPath) == true)
             {
-                treeView1.Nodes.Clear();
+                treeView.Nodes.Clear();
                 string[] drives = Directory.GetDirectories(mainPath);
 
                 foreach (string drive in drives)
@@ -338,37 +346,37 @@ namespace ImageManager
                             };
 
                             node.Nodes.Add("...");
-                            treeView1.Nodes.Add(node);
+                            treeView.Nodes.Add(node);
                         }
                     }
                 }
             }
             else
             {
-                treeView1.Nodes.Clear();
+                treeView.Nodes.Clear();
             }
 
-            toolStripProgressBar1.Value = 0;
-            toolStripStatusLabel1.Visible = false;
-            toolStripProgressBar1.Visible = false;
-            button1.Enabled = true;
+            progressStatusBar.Value = 0;
+            loadStatusBarLabel.Visible = false;
+            progressStatusBar.Visible = false;
+            openBtn.Enabled = true;
 
             MessageBox.Show("Se han procesado todas las imágenes", "Procesamiento terminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void bgWrk1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            toolStripStatusLabel1.Visible = true;
-            toolStripProgressBar1.Visible = true;
+            loadStatusBarLabel.Visible = true;
+            progressStatusBar.Visible = true;
             string[] files = Directory.GetFiles(selectedPath);
-            toolStripProgressBar1.Maximum = files.Length;
-            toolStripProgressBar1.Value = e.ProgressPercentage;
-            toolStripStatusLabel1.Text = "Cargando... " + "[" + e.ProgressPercentage + "/" + files.Length + "]";
+            progressStatusBar.Maximum = files.Length;
+            progressStatusBar.Value = e.ProgressPercentage;
+            loadStatusBarLabel.Text = "Cargando... " + "[" + e.ProgressPercentage + "/" + files.Length + "]";
         }
 
         public Control rm_lbl;
 
-        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (rm_lbl != null)
             {
@@ -380,10 +388,10 @@ namespace ImageManager
             charging.Font = new Font("Segoe UI", 32);
             charging.BackColor = Color.Transparent;
             charging.Size = new Size(247, 57);
-            charging.Location = new Point((this.Width - charging.Width + treeView1.Width) / 2, (this.Height - charging.Height - groupBox1.Height) / 2);
+            charging.Location = new Point((this.Width - charging.Width + treeView.Width) / 2, (this.Height - charging.Height - groupBox1.Height) / 2);
 
-            flowLayoutPanel1.Visible = false;
-            flowLayoutPanel1.Controls.Clear();
+            main_flowLayoutPanel.Visible = false;
+            main_flowLayoutPanel.Controls.Clear();
 
             this.Controls.Add(charging);
             charging.BringToFront();
@@ -402,12 +410,12 @@ namespace ImageManager
                         imgCtrl.Tag = files[i];
                         imgCtrl.SizeMode = PictureBoxSizeMode.Zoom;
                         imgCtrl.Click += new EventHandler(SeeImg);
-                        flowLayoutPanel1.Controls.Add(imgCtrl);
+                        main_flowLayoutPanel.Controls.Add(imgCtrl);
                     }
                     alzheimer();
                 }
                 charging.Dispose();
-                flowLayoutPanel1.Visible = true;
+                main_flowLayoutPanel.Visible = true;
             }
             else
             {
@@ -418,10 +426,10 @@ namespace ImageManager
                 empty.Font = new Font("Segoe UI", 32);
                 empty.BackColor = Color.Transparent;
                 empty.Size = new Size(290, 57);
-                empty.Location = new Point((this.Width - empty.Width + treeView1.Width) / 2, (this.Height - empty.Height - groupBox1.Height) / 2);
+                empty.Location = new Point((this.Width - empty.Width + treeView.Width) / 2, (this.Height - empty.Height - groupBox1.Height) / 2);
 
-                flowLayoutPanel1.Visible = false;
-                flowLayoutPanel1.Controls.Clear();
+                main_flowLayoutPanel.Visible = false;
+                main_flowLayoutPanel.Controls.Clear();
 
                 rm_lbl = empty;
 
@@ -432,15 +440,15 @@ namespace ImageManager
 
         private void SeeImg(object sender, EventArgs e)
         {
-            button1.Visible = false;
-            button2.Visible = false;
-            button3.Visible = true;
-            button4.Visible = true;
-            button5.Visible = true;
+            openBtn.Visible = false;
+            configBtn.Visible = false;
+            forwardBtn.Visible = true;
+            rotationBtn.Visible = true;
+            deleteBtn.Visible = true;
 
             pictureBox1.Visible = true;
             PictureBox box = (PictureBox)sender;
-            button5.Tag = box.Tag.ToString();
+            deleteBtn.Tag = box.Tag.ToString();
             pictureBox1.BringToFront();
             pictureBox1.Image = Image.FromFile(box.Tag.ToString());
         }
@@ -451,19 +459,19 @@ namespace ImageManager
             pictureBox1.Image = null;
             pictureBox1.SendToBack();
             pictureBox1.Visible = false;
-            button5.Visible = false;
-            button4.Visible = false;
-            button3.Visible = false;
-            button2.Visible = true;
-            button1.Visible = true;
+            deleteBtn.Visible = false;
+            rotationBtn.Visible = false;
+            forwardBtn.Visible = false;
+            configBtn.Visible = true;
+            openBtn.Visible = true;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void forwardBtn_Click(object sender, EventArgs e)
         {
             hidePic();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void openBtn_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog data = new FolderBrowserDialog();
             data.Description = "[!] Selecciona el dispositivo o carpeta que contiene todas las imágenes.";
@@ -471,8 +479,8 @@ namespace ImageManager
             {
                 var ini = new INI(Application.StartupPath + "/config.ini");
                 mainPath = ini.Read("mainPath");
-                button1.Enabled = false;
-                button6.Visible = true;
+                openBtn.Enabled = false;
+                cancelBtn.Visible = true;
                 selectedPath = data.SelectedPath;
                 bgWrk1.WorkerReportsProgress = true;
                 bgWrk1.RunWorkerAsync();
@@ -480,7 +488,7 @@ namespace ImageManager
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void rotationBtn_Click(object sender, EventArgs e)
         {
             if(pictureBox1.Image != null)
             {
@@ -490,21 +498,21 @@ namespace ImageManager
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void configBtn_Click(object sender, EventArgs e)
         {
             Config fc = Application.OpenForms["Config"] != null ? (Config)Application.OpenForms["Config"] : null;
             if (fc == null)
             {
-                Config frmConfig = new Config();
+                Config frmConfig = new Config(this);
                 frmConfig.Show();
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void deleteBtn_Click(object sender, EventArgs e)
         {
-            foreach(Control ctrl in flowLayoutPanel1.Controls)
+            foreach(Control ctrl in main_flowLayoutPanel.Controls)
             {
-                if (ctrl.Tag.ToString() == button5.Tag.ToString())
+                if (ctrl.Tag.ToString() == deleteBtn.Tag.ToString())
                 {
                     DialogResult dr = MessageBox.Show("¿Estas seguro que quieres eliminar esta imagen?", "Eliminar Imagen", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (dr == DialogResult.OK)
@@ -522,15 +530,15 @@ namespace ImageManager
             }
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void cancelBtn_Click(object sender, EventArgs e)
         {
             DialogResult dr = MessageBox.Show("¿Estas seguro que quieres cancelar el proceso?\n No se eliminarán los datos creados hasta el momento", "Cancelar Proceso", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
             if(dr == DialogResult.OK)
             {
                 bgWrk1.CancelAsync();
-                button6.Visible = false;
-                button1.Enabled = true;
+                cancelBtn.Visible = false;
+                openBtn.Enabled = true;
             }
         }
 
@@ -551,40 +559,40 @@ namespace ImageManager
             }
         }
 
-        private void toolStripDropDownButton1_Click(object sender, EventArgs e)
+        private void refreshStatusBtn_Click(object sender, EventArgs e)
         {
-            treeView1.Nodes.Clear();
+            treeView.Nodes.Clear();
             getTreeView();
         }
 
-        private void button1_MouseHover(object sender, EventArgs e)
+        private void openBtn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.button1, "Seleccionar imágenes");
+            toolTip1.SetToolTip(this.openBtn, "Seleccionar imágenes");
         }
 
-        private void button6_MouseHover(object sender, EventArgs e)
+        private void cancelBtn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.button6, "Cancelar proceso");
+            toolTip1.SetToolTip(this.cancelBtn, "Cancelar proceso");
         }
 
-        private void button3_MouseHover(object sender, EventArgs e)
+        private void forwardBtn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.button3, "Volver");
+            toolTip1.SetToolTip(this.forwardBtn, "Volver");
         }
 
-        private void button4_MouseHover(object sender, EventArgs e)
+        private void rotationBtn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.button4, "Rotar imagen");
+            toolTip1.SetToolTip(this.rotationBtn, "Rotar imagen");
         }
 
-        private void button2_MouseHover(object sender, EventArgs e)
+        private void configBtn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.button2, "Configuración");
+            toolTip1.SetToolTip(this.configBtn, "Configuración");
         }
 
-        private void button5_MouseHover(object sender, EventArgs e)
+        private void deleteBtn_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(this.button5, "Eliminar imágen");
+            toolTip1.SetToolTip(this.deleteBtn, "Eliminar imagen");
         }
     }
 }
