@@ -96,7 +96,7 @@
             // 
             // labelAnim
             // 
-            this.labelAnim.Interval = 6000;
+            this.labelAnim.Interval = 2000;
             this.labelAnim.Tick += new System.EventHandler(this.labelAnim_Tick);
             // 
             // contentPanel
