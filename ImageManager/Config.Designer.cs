@@ -30,96 +30,122 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.configGroupBox = new System.Windows.Forms.GroupBox();
+            this.alertLbl = new System.Windows.Forms.Label();
+            this.selectMainPathBtn = new System.Windows.Forms.Button();
+            this.mainPathLbl = new System.Windows.Forms.Label();
+            this.mainPathTxt = new System.Windows.Forms.TextBox();
             this.labelAnim = new System.Windows.Forms.Timer(this.components);
-            this.groupBox1.SuspendLayout();
+            this.contentPanel = new System.Windows.Forms.Panel();
+            this.alertPanel = new System.Windows.Forms.Panel();
+            this.configGroupBox.SuspendLayout();
+            this.contentPanel.SuspendLayout();
+            this.alertPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // configGroupBox
             // 
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(356, 123);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Tu Configuración";
+            this.configGroupBox.Controls.Add(this.selectMainPathBtn);
+            this.configGroupBox.Controls.Add(this.mainPathLbl);
+            this.configGroupBox.Controls.Add(this.mainPathTxt);
+            this.configGroupBox.Location = new System.Drawing.Point(3, 3);
+            this.configGroupBox.Name = "configGroupBox";
+            this.configGroupBox.Size = new System.Drawing.Size(350, 88);
+            this.configGroupBox.TabIndex = 1;
+            this.configGroupBox.TabStop = false;
+            this.configGroupBox.Text = "Tu Configuración";
             // 
-            // label2
+            // alertLbl
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.label2.Location = new System.Drawing.Point(23, 86);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 18);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "%data%";
-            this.label2.Visible = false;
+            this.alertLbl.AutoSize = true;
+            this.alertLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.alertLbl.ForeColor = System.Drawing.Color.White;
+            this.alertLbl.Location = new System.Drawing.Point(3, 15);
+            this.alertLbl.Name = "alertLbl";
+            this.alertLbl.Size = new System.Drawing.Size(62, 18);
+            this.alertLbl.TabIndex = 3;
+            this.alertLbl.Text = "%data%";
+            this.alertLbl.Visible = false;
             // 
-            // button2
+            // selectMainPathBtn
             // 
-            this.button2.Location = new System.Drawing.Point(311, 42);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(29, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "...";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.selectMainPathBtn.Location = new System.Drawing.Point(311, 42);
+            this.selectMainPathBtn.Name = "selectMainPathBtn";
+            this.selectMainPathBtn.Size = new System.Drawing.Size(29, 23);
+            this.selectMainPathBtn.TabIndex = 2;
+            this.selectMainPathBtn.Text = "...";
+            this.selectMainPathBtn.UseVisualStyleBackColor = true;
+            this.selectMainPathBtn.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label1
+            // mainPathLbl
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Ruta de guardado:";
+            this.mainPathLbl.AutoSize = true;
+            this.mainPathLbl.Location = new System.Drawing.Point(23, 28);
+            this.mainPathLbl.Name = "mainPathLbl";
+            this.mainPathLbl.Size = new System.Drawing.Size(96, 13);
+            this.mainPathLbl.TabIndex = 1;
+            this.mainPathLbl.Text = "Ruta de guardado:";
             // 
-            // textBox1
+            // mainPathTxt
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(26, 44);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(279, 20);
-            this.textBox1.TabIndex = 0;
+            this.mainPathTxt.Enabled = false;
+            this.mainPathTxt.Location = new System.Drawing.Point(26, 44);
+            this.mainPathTxt.Name = "mainPathTxt";
+            this.mainPathTxt.Size = new System.Drawing.Size(279, 20);
+            this.mainPathTxt.TabIndex = 0;
             // 
             // labelAnim
             // 
             this.labelAnim.Interval = 6000;
             this.labelAnim.Tick += new System.EventHandler(this.labelAnim_Tick);
             // 
+            // contentPanel
+            // 
+            this.contentPanel.Controls.Add(this.configGroupBox);
+            this.contentPanel.Location = new System.Drawing.Point(12, 12);
+            this.contentPanel.Name = "contentPanel";
+            this.contentPanel.Size = new System.Drawing.Size(356, 94);
+            this.contentPanel.TabIndex = 2;
+            // 
+            // alertPanel
+            // 
+            this.alertPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(96)))));
+            this.alertPanel.Controls.Add(this.alertLbl);
+            this.alertPanel.Location = new System.Drawing.Point(12, 12);
+            this.alertPanel.Name = "alertPanel";
+            this.alertPanel.Size = new System.Drawing.Size(356, 48);
+            this.alertPanel.TabIndex = 4;
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(380, 147);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(380, 122);
+            this.Controls.Add(this.contentPanel);
+            this.Controls.Add(this.alertPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Config";
             this.Text = "Configuración";
             this.Load += new System.EventHandler(this.Config_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.configGroupBox.ResumeLayout(false);
+            this.configGroupBox.PerformLayout();
+            this.contentPanel.ResumeLayout(false);
+            this.alertPanel.ResumeLayout(false);
+            this.alertPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox configGroupBox;
+        private System.Windows.Forms.Button selectMainPathBtn;
+        private System.Windows.Forms.Label mainPathLbl;
+        private System.Windows.Forms.TextBox mainPathTxt;
+        private System.Windows.Forms.Label alertLbl;
         private System.Windows.Forms.Timer labelAnim;
+        private System.Windows.Forms.Panel contentPanel;
+        private System.Windows.Forms.Panel alertPanel;
     }
 }

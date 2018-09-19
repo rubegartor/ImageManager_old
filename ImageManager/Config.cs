@@ -20,7 +20,7 @@ namespace ImageManager
             if (File.Exists(Application.StartupPath + "/config.ini"))
             {
                 var ini = new INI(Application.StartupPath + "/config.ini");
-                textBox1.Text = ini.Read("mainPath");
+                mainPathTxt.Text = ini.Read("mainPath");
             }
             else
             {
@@ -28,13 +28,21 @@ namespace ImageManager
             }
         }
 
-        public void setLabel(string msg, Color color)
+        public void showAlert(string msg, Color color)
         {
-            label2.Text = msg;
-            label2.Location = new Point((groupBox1.Width - label2.Width) / 2, label2.Location.Y);
-            label2.ForeColor = color;
-            label2.Visible = true;
+            alertLbl.Text = msg;
+            this.Size = new Size(this.Size.Width, (contentPanel.Height + alertPanel.Height + 75));
+            contentPanel.Location = new Point(contentPanel.Location.X, (alertPanel.Height + 20));
+            alertLbl.Location = new Point((alertPanel.Width - alertLbl.Width) / 2, (alertPanel.Height - alertLbl.Height) / 2);
+            alertLbl.BackColor = color;
+            alertLbl.Visible = true;
             labelAnim.Start();
+        }
+
+        public void hideAlert()
+        {
+            contentPanel.Location = new Point(contentPanel.Location.X, (alertPanel.Height - 40));
+            this.Size = new Size(this.Size.Width, (contentPanel.Height + alertPanel.Height + 15));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -51,9 +59,9 @@ namespace ImageManager
 
                         var ini = new INI(Application.StartupPath + "/config.ini");
                         ini.Write("mainPath", toWrite);
-                        textBox1.Text = toWrite;
+                        mainPathTxt.Text = toWrite;
 
-                        setLabel("Ruta guardada con éxito", Color.Green);
+                        showAlert("Ruta guardada con éxito", ColorTranslator.FromHtml("#27ae60"));
 
                         frmMain.getTreeView();
                     } else {
@@ -61,9 +69,9 @@ namespace ImageManager
 
                         var ini = new INI(Application.StartupPath + "/config.ini");
                         ini.Write("mainPath", toWrite);
-                        textBox1.Text = toWrite;
+                        mainPathTxt.Text = toWrite;
 
-                        setLabel("Ruta guardada con éxito", Color.Green);
+                        showAlert("Ruta guardada con éxito", ColorTranslator.FromHtml("#27ae60"));
 
                         frmMain.getTreeView();
                     }
@@ -73,8 +81,9 @@ namespace ImageManager
 
         private void labelAnim_Tick(object sender, EventArgs e)
         {
-            label2.Visible = false;
+            alertLbl.Visible = false;
             labelAnim.Stop();
+            hideAlert();
         }
     }
 }
