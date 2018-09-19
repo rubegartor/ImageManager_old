@@ -87,8 +87,7 @@ namespace ImageManager
         {
             if (File.Exists(Application.StartupPath + "/config.ini"))
             {
-                var ini = new INI(Application.StartupPath + "/config.ini");
-                mainPath = ini.Read("mainPath");
+                mainPath = getMainPath();
                 if (Directory.Exists(mainPath))
                 {
                     getTreeView();
@@ -171,6 +170,52 @@ namespace ImageManager
             return false;
         }
 
+        public static string parseDate(string monthDir, string yearDir)
+        {
+            string res = "";
+            switch (monthDir)
+            {
+                case "01":
+                    res = yearDir + "/" + monthDir + " (ene)";
+                    break;
+                case "02":
+                    res = yearDir + "/" + monthDir + " (feb)";
+                    break;
+                case "03":
+                    res = yearDir + "/" + monthDir + " (mar)";
+                    break;
+                case "04":
+                    res = yearDir + "/" + monthDir + " (abr)";
+                    break;
+                case "05":
+                    res = yearDir + "/" + monthDir + " (may)";
+                    break;
+                case "06":
+                    res = yearDir + "/" + monthDir + " (jun)";
+                    break;
+                case "07":
+                    res = yearDir + "/" + monthDir + " (jul)";
+                    break;
+                case "08":
+                    res = yearDir + "/" + monthDir + " (ago)";
+                    break;
+                case "09":
+                    res = yearDir + "/" + monthDir + " (sep)";
+                    break;
+                case "10":
+                    res = yearDir + "/" + monthDir + " (oct)";
+                    break;
+                case "11":
+                    res = yearDir + "/" + monthDir + " (nov)";
+                    break;
+                case "12":
+                    res = yearDir + "/" + monthDir + " (dic)";
+                    break;
+            }
+
+            return res;
+        }
+
         private void bgWrk1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             string[] files = Directory.GetFiles(selectedPath);
@@ -186,7 +231,7 @@ namespace ImageManager
                     try
                     {
                         Image myImage = Image.FromFile(files[i]);
-                        PropertyItem propItem = myImage.GetPropertyItem(36867);
+                        PropertyItem propItem = myImage.GetPropertyItem(36867); //Date taken 
 
                         //Convert date taken metadata to a DateTime object
                         string sdate = Encoding.UTF8.GetString(propItem.Value).Trim();
@@ -197,50 +242,12 @@ namespace ImageManager
                         string yearDir = mainPath + "/" + date[0];
                         string monthDir = yearDir + "/" + date[1];
 
-                        switch (monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2))
-                        {
-                            case "01":
-                                monthDir = yearDir + "/" + date[1] + " (ene)";
-                                break;
-                            case "02":
-                                monthDir = yearDir + "/" + date[1] + " (feb)";
-                                break;
-                            case "03":
-                                monthDir = yearDir + "/" + date[1] + " (mar)";
-                                break;
-                            case "04":
-                                monthDir = yearDir + "/" + date[1] + " (abr)";
-                                break;
-                            case "05":
-                                monthDir = yearDir + "/" + date[1] + " (may)";
-                                break;
-                            case "06":
-                                monthDir = yearDir + "/" + date[1] + " (jun)";
-                                break;
-                            case "07":
-                                monthDir = yearDir + "/" + date[1] + " (jul)";
-                                break;
-                            case "08":
-                                monthDir = yearDir + "/" + date[1] + " (ago)";
-                                break;
-                            case "09":
-                                monthDir = yearDir + "/" + date[1] + " (sep)";
-                                break;
-                            case "10":
-                                monthDir = yearDir + "/" + date[1] + " (oct)";
-                                break;
-                            case "11":
-                                monthDir = yearDir + "/" + date[1] + " (nov)";
-                                break;
-                            case "12":
-                                monthDir = yearDir + "/" + date[1] + " (dic)";
-                                break;
-                        }
+                        monthDir = mainPath  + "/" + parseDate(monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2), date[0]);
 
                         Directory.CreateDirectory(yearDir);
                         Directory.CreateDirectory(monthDir);
 
-                        if (File.Exists(monthDir + "/" + Path.GetFileName(files[i])) == false)
+                        if (!File.Exists(monthDir + "/" + Path.GetFileName(files[i])))
                         {
                             File.Copy(files[i], monthDir + "/" + Path.GetFileName(files[i]));
                         }
@@ -262,51 +269,11 @@ namespace ImageManager
                             string yearDir = mainPath + "/" + date[2];
                             string monthDir = yearDir + "/" + date[1];
 
-
-
-                            switch (monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2))
-                            {
-                                case "01":
-                                    monthDir = yearDir + "/" + date[1] + " (ene)";
-                                    break;
-                                case "02":
-                                    monthDir = yearDir + "/" + date[1] + " (feb)";
-                                    break;
-                                case "03":
-                                    monthDir = yearDir + "/" + date[1] + " (mar)";
-                                    break;
-                                case "04":
-                                    monthDir = yearDir + "/" + date[1] + " (abr)";
-                                    break;
-                                case "05":
-                                    monthDir = yearDir + "/" + date[1] + " (may)";
-                                    break;
-                                case "06":
-                                    monthDir = yearDir + "/" + date[1] + " (jun)";
-                                    break;
-                                case "07":
-                                    monthDir = yearDir + "/" + date[1] + " (jul)";
-                                    break;
-                                case "08":
-                                    monthDir = yearDir + "/" + date[1] + " (ago)";
-                                    break;
-                                case "09":
-                                    monthDir = yearDir + "/" + date[1] + " (sep)";
-                                    break;
-                                case "10":
-                                    monthDir = yearDir + "/" + date[1] + " (oct)";
-                                    break;
-                                case "11":
-                                    monthDir = yearDir + "/" + date[1] + " (nov)";
-                                    break;
-                                case "12":
-                                    monthDir = yearDir + "/" + date[1] + " (dic)";
-                                    break;
-                            }
+                            monthDir = mainPath + "/" + parseDate(monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2), date[2]);
 
                             Directory.CreateDirectory(yearDir);
                             Directory.CreateDirectory(monthDir);
-                            if (File.Exists(monthDir + "/" + Path.GetFileName(files[i])) == false)
+                            if (!File.Exists(monthDir + "/" + Path.GetFileName(files[i])))
                             {
                                 File.Copy(files[i], monthDir + "/" + Path.GetFileName(files[i]));
                             }
@@ -328,7 +295,7 @@ namespace ImageManager
         private void bgWrk1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             cancelBtn.Visible = false;
-            if (Directory.Exists(mainPath) == true)
+            if (Directory.Exists(mainPath))
             {
                 treeView.Nodes.Clear();
                 string[] drives = Directory.GetDirectories(mainPath);
@@ -402,17 +369,20 @@ namespace ImageManager
             {
                 for (int i = 0; i < files.Length; i++)
                 {
-                    PictureBox imgCtrl = new PictureBox();
-                    if (IfContains(files[i], "image"))
+                    if(new FileInfo(files[i]).Length > 0)
                     {
-                        imgCtrl.Image = Image.FromFile(files[i]).GetThumbnailImage(640, 360, () => false, IntPtr.Zero);
-                        imgCtrl.Size = new Size(200, 113);
-                        imgCtrl.Tag = files[i];
-                        imgCtrl.SizeMode = PictureBoxSizeMode.Zoom;
-                        imgCtrl.Click += new EventHandler(SeeImg);
-                        main_flowLayoutPanel.Controls.Add(imgCtrl);
+                        PictureBox imgCtrl = new PictureBox();
+                        if (IfContains(files[i], "image"))
+                        {
+                            imgCtrl.Image = Image.FromFile(files[i]).GetThumbnailImage(640, 360, null, IntPtr.Zero);
+                            imgCtrl.Size = new Size(200, 113);
+                            imgCtrl.Tag = files[i];
+                            imgCtrl.SizeMode = PictureBoxSizeMode.Zoom;
+                            imgCtrl.Click += new EventHandler(SeeImg);
+                            main_flowLayoutPanel.Controls.Add(imgCtrl);
+                        }
+                        alzheimer();
                     }
-                    alzheimer();
                 }
                 charging.Dispose();
                 main_flowLayoutPanel.Visible = true;
