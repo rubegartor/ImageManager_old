@@ -13,17 +13,17 @@ namespace ImageManager
 {
     public partial class Main : Form
     {
-        public Main()
-        {
-            InitializeComponent();
-        }
-
         [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
         private static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
 
         public string mainPath = @"";
         public string selectedPath;
+        public Control rm_lbl;
 
+        public Main()
+        {
+            InitializeComponent();
+        }
 
         public static void alzheimer()
         {
@@ -145,10 +145,75 @@ namespace ImageManager
             }
         }
 
+        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (rm_lbl != null)
+            {
+                rm_lbl.Dispose();
+            }
+
+            Label charging = new Label();
+            charging.Text = "Cargando...";
+            charging.Font = new Font("Segoe UI", 32);
+            charging.BackColor = Color.Transparent;
+            charging.Size = new Size(247, 57);
+            charging.Location = new Point((this.Width - charging.Width + treeView.Width) / 2, (this.Height - charging.Height - groupBox1.Height) / 2);
+
+            main_flowLayoutPanel.Visible = false;
+            main_flowLayoutPanel.Controls.Clear();
+
+            this.Controls.Add(charging);
+            charging.BringToFront();
+
+            string[] files = Directory.GetFiles(e.Node.Tag.ToString());
+
+            if (files.Length > 0)
+            {
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (new FileInfo(files[i]).Length > 0)
+                    {
+                        PictureBox imgCtrl = new PictureBox();
+                        if (IfContains(files[i], "image"))
+                        {
+                            imgCtrl.Image = Image.FromFile(files[i]).GetThumbnailImage(640, 360, null, IntPtr.Zero);
+                            imgCtrl.Size = new Size(200, 113);
+                            imgCtrl.Tag = files[i];
+                            imgCtrl.SizeMode = PictureBoxSizeMode.Zoom;
+                            imgCtrl.Click += new EventHandler(SeeImg);
+                            main_flowLayoutPanel.Controls.Add(imgCtrl);
+                        }
+                        alzheimer();
+                    }
+                }
+                charging.Dispose();
+                main_flowLayoutPanel.Visible = true;
+            }
+            else
+            {
+                charging.Dispose();
+
+                Label empty = new Label();
+                empty.Text = "Carpeta Vacía";
+                empty.Font = new Font("Segoe UI", 32);
+                empty.BackColor = Color.Transparent;
+                empty.Size = new Size(290, 57);
+                empty.Location = new Point((this.Width - empty.Width + treeView.Width) / 2, (this.Height - empty.Height - groupBox1.Height) / 2);
+
+                main_flowLayoutPanel.Visible = false;
+                main_flowLayoutPanel.Controls.Clear();
+
+                rm_lbl = empty;
+
+                this.Controls.Add(empty);
+                charging.BringToFront();
+            }
+        }
+
         static bool IfContains(string data, string type)
         {
-            List<string> lstFormat_all = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".heif", ".ogg", ".webm", ".mp4", ".avi", ".flv" });
-            List<string> lstFormat_images = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".heif", ".ogg", ".webm" });
+            List<string> lstFormat_all = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".heif", ".webm", ".mp4", ".avi", ".flv" });
+            List<string> lstFormat_images = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".heif"});
             if(type == "all")
             {
                 foreach (string item in lstFormat_all)
@@ -339,73 +404,6 @@ namespace ImageManager
             progressStatusBar.Maximum = files.Length;
             progressStatusBar.Value = e.ProgressPercentage;
             loadStatusBarLabel.Text = "Cargando... " + "[" + e.ProgressPercentage + "/" + files.Length + "]";
-        }
-
-        public Control rm_lbl;
-
-        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (rm_lbl != null)
-            {
-                rm_lbl.Dispose();
-            }
-
-            Label charging = new Label();
-            charging.Text = "Cargando...";
-            charging.Font = new Font("Segoe UI", 32);
-            charging.BackColor = Color.Transparent;
-            charging.Size = new Size(247, 57);
-            charging.Location = new Point((this.Width - charging.Width + treeView.Width) / 2, (this.Height - charging.Height - groupBox1.Height) / 2);
-
-            main_flowLayoutPanel.Visible = false;
-            main_flowLayoutPanel.Controls.Clear();
-
-            this.Controls.Add(charging);
-            charging.BringToFront();
-
-            string[] files = Directory.GetFiles(e.Node.Tag.ToString());
-
-            if (files.Length > 0)
-            {
-                for (int i = 0; i < files.Length; i++)
-                {
-                    if(new FileInfo(files[i]).Length > 0)
-                    {
-                        PictureBox imgCtrl = new PictureBox();
-                        if (IfContains(files[i], "image"))
-                        {
-                            imgCtrl.Image = Image.FromFile(files[i]).GetThumbnailImage(640, 360, null, IntPtr.Zero);
-                            imgCtrl.Size = new Size(200, 113);
-                            imgCtrl.Tag = files[i];
-                            imgCtrl.SizeMode = PictureBoxSizeMode.Zoom;
-                            imgCtrl.Click += new EventHandler(SeeImg);
-                            main_flowLayoutPanel.Controls.Add(imgCtrl);
-                        }
-                        alzheimer();
-                    }
-                }
-                charging.Dispose();
-                main_flowLayoutPanel.Visible = true;
-            }
-            else
-            {
-                charging.Dispose();
-
-                Label empty = new Label();
-                empty.Text = "Carpeta Vacía";
-                empty.Font = new Font("Segoe UI", 32);
-                empty.BackColor = Color.Transparent;
-                empty.Size = new Size(290, 57);
-                empty.Location = new Point((this.Width - empty.Width + treeView.Width) / 2, (this.Height - empty.Height - groupBox1.Height) / 2);
-
-                main_flowLayoutPanel.Visible = false;
-                main_flowLayoutPanel.Controls.Clear();
-
-                rm_lbl = empty;
-
-                this.Controls.Add(empty);
-                charging.BringToFront();
-            }
         }
 
         private void SeeImg(object sender, EventArgs e)
