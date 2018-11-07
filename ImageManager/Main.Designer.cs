@@ -48,6 +48,7 @@
             this.deleteBtn = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.infoBtn = new System.Windows.Forms.Button();
             this.statusBar.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tools_flowLayoutPanel.SuspendLayout();
@@ -171,6 +172,7 @@
             this.tools_flowLayoutPanel.Controls.Add(this.rotationBtn);
             this.tools_flowLayoutPanel.Controls.Add(this.configBtn);
             this.tools_flowLayoutPanel.Controls.Add(this.deleteBtn);
+            this.tools_flowLayoutPanel.Controls.Add(this.infoBtn);
             this.tools_flowLayoutPanel.Location = new System.Drawing.Point(6, 10);
             this.tools_flowLayoutPanel.Name = "tools_flowLayoutPanel";
             this.tools_flowLayoutPanel.Size = new System.Drawing.Size(859, 53);
@@ -237,6 +239,17 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
             // 
+            // infoBtn
+            // 
+            this.infoBtn.Image = ((System.Drawing.Image)(resources.GetObject("infoBtn.Image")));
+            this.infoBtn.Location = new System.Drawing.Point(387, 3);
+            this.infoBtn.Name = "infoBtn";
+            this.infoBtn.Size = new System.Drawing.Size(58, 48);
+            this.infoBtn.TabIndex = 7;
+            this.infoBtn.UseVisualStyleBackColor = true;
+            this.infoBtn.Visible = false;
+            this.infoBtn.Click += new System.EventHandler(this.infoBtn_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -282,6 +295,7 @@
         private System.Windows.Forms.ToolStripDropDownButton refreshStatusBtn;
         private System.Windows.Forms.ToolTip toolTip1;
         public System.Windows.Forms.TreeView treeView;
+        private System.Windows.Forms.Button infoBtn;
     }
 }
 

@@ -73,6 +73,12 @@
     <Compile Include="Config.Designer.cs">
       <DependentUpon>Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="fInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fInfo.Designer.cs">
+      <DependentUpon>fInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="INI.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -84,6 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fInfo.resx">
+      <DependentUpon>fInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>

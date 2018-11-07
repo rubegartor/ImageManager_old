@@ -140,16 +140,16 @@
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJjSURBVEhLrZW9i9RQEMCzaq2IWiiI5+olebecFiKICDb+
-        JYIfXCFoqzDP3fMURbE6uMNT0EZWRIu95M1GvEaxOBcEC0tBCy0sFbXYW2deJjHJbY51zQ+meDPz5s2b
-        ZOY5VeHPhrsVmNOyHB23hft9bc74gPc9jRGLAlyk9UyjFRxgH38u2qF08N7XuGQ3jYIH5jjJCwXza0rj
-        oET6dNBzpcNVuwbsyPYNaLc3+2DuDgn80Wav8bULwdeCTSRclSglcHAdPkk21OHpd8pw1oNwQjxSGk1z
-        WMHyt+wBHuAnMQ9HQXgns6GnWp19YsoT37Kd8Y0F8JfjDGrilWcKohOZsvQOQrBVTAUGNf6YucAZmb7e
-        2S6OeSj7V+zAZWm0zF5Rr6N+I9pGvqdYGleDo34Tj3jN7vQkRHWWk7CyRVz/4jVDL8mAfslroq4O+pCX
-        kgM4C1FXB2X9KM4eP4uqWihwaG9A30FUY0MxzlM/LChtLouKlXiFlVMaz4lqbCjwmzjZUbp6DCY1frHl
-        ptklqurwIXJt9vENLoi6Oqi7b8bB59eSSZuDmyRpGG4ebiJupqSxyrs7yf7ZT8n+pajzcJunVywIje57
-        ZXPGdje9B9aXsvehe0xMRQa1XRp/F4PzYOMBJ0457IME+C711XhLTMPhZssG55FM8/+QmFO4jPREzrka
-        fyS+NK4flyWSQvV7mztARB6ZnrUX3gGSPv3/tx2ATRKmHE+bZbvJBsJuIVBR+vzKbVDz9VAmD2jjBxdW
-        dvKaJy2V7SIdtmgPB2OoFA+p7jNcf7vpX6CNZz3o7pHlf+I4fwBxH8w5l/oxYgAAAABJRU5ErkJggg==
+        JYIfXCFoqzDP3fMURbG54g5PQRtZES32kjcb8RrF4lwQLCwFLbSwVNRib515mcQktznWNT+Y4s3Mmzdv
+        kpnnVIU/G+5WYE7LcnTcFu73tTnjA973NEYsCnCR1jONVnCAffy5aIfSwXtf45LdNAoemOMkLxTMrymN
+        gxLp00HPlQ5X7RqwI9s3oN3e7IO5OyTwR5u9xtcuBF8LNpFwVaKUwMF1+CTZUIen3ynDWQ/CCfFIaTTN
+        YQXL37IHeICfxDwcBeGdzIaeanX2iSlPfMt2xjcWwF+OM6iJV54piE5kytI7CMFWMRUY1Phj5gJnZPp6
+        Z7s45qHsX7EDl6XRMntFvY76jWgb+Z5iaVwNjvpNPOI1u9OTENVZTsLKFnH9i9cMvSQD+iWvibo66ENe
+        Sg7gLERdHZT1ozh7/CyqaqHAob0BfQdRjQ3FOE/9sKC0uSwqVuIVVk5pPCeqsaHAb+JkR+nqMZjU+MWW
+        m2aXqKrDh8i12cc3uCDq6qDuvhkHn19LJm0ObpKkYbh5uIm4mZLGKu/uJPtnPyX7l6LOw22eXrEgNLrv
+        lc0Z2930Hlhfyt6H7jExFRnUdmn8XQzOg40HnDjlsA8S4LvUV+MtMQ2Hmy0bnEcyzf9DYk7hMtITOedq
+        /JH40rh+XJZICtXvbe4AEXlketZeeAdI+vT/33YANkmYcjxtlu0mGwi7hUBF6fMrt0HN10OZPKCNH1xY
+        2clrnrRUtot02KI9HIyhUjykus9w/e2mf4E2nvWgu0eW/4nj/AFU6cw0DbBqswAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="forwardBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -261,6 +261,25 @@
         rMwAAZzPQHw++wKzxPmTugJWZoAAzmcgjvMambkVxPkTPCzNAAEmXAjxd2WBFbQlAwTmygIraEsGCOhZ
         YOMZkciApvCbBdzWWiSf3dtFbmc9ZGZ2kNtZj5I/LszIDK3ksbP/xLmd9ahu+PdnOydRcuZv5fQV94/c
         LocccvjwkZf3FngpkOlqQht7AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="infoBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAxZJREFUaEPtmcluE0EQhi22Aze2A2CwHSIOXBERnHgIEpbwICAOWCBEcg3xzMTk
+        DRIRFLE8AMsDQOAB2CSWJLKnsWU4ePhrXCDTqrG7PYsN8if9skWqq356Ot01ndyYMWMSYCXYWXDrZ0uu
+        f6PoqgclR72FtouO/5MUfnf9N+HPEEOxuXKwg0cPjxNO81jJVfMw9QmfgZUc/yM+5ycXGnlOlx0nq/5B
+        FL+P2f3xl6kBxDk8ysnp0wXFZrEktrpNJKGio77hc5bLJM+plWAPiizrhROXo5ZOV4PdXDYZDleDvViz
+        T8WCKQjL6gnV5PLxoJnP0vwfOWo9kSeRybKJEpYT2xiMkqeuiokzFCbwEtuxY3LBP4QEm3rCrEW705HF
+        +gG2ZQ49PimhqW6/aAVfGu1Qt563xBhT4Ze6wrbMoBM2ziF18WEz6KYNTa81xVgTkZe81zjK9vqDQWgP
+        5GQmuvOy1XHeBf2bFGsqLKU5ttcHNFncp4iJTDQjPIELMZ4ACc3ge6MGsLBUPyclsFX5WSv4/L0d6ia+
+        SzHW8mpTbDMaanfFwSOgCde/zjajwe6zJg0eBeF9YpVtRkMvHtLgURB2ow22GQ2ewLY02FY6UswA2mSb
+        0cTZ/7ulI8XYiryxzWj++f/A/7CENoSB1tKRYmyFDeY124ymc/UhJ7CRjhRjK6NtNKmDTEeKsRVWxzW2
+        GU3ngkpOYCMdKcZaTuMM2+wBGiastQ9iAgvpSDE2Mm7mCGpdpSQ20pFibIT1f5ft9Yeu++KeBzpSjKkw
+        +y2rFxoCAz090bCEyVxkW+bQizQGD/+l3lVf88u1/WzLjomKuiIlzVgzbGcw0FpUhaQZyb/HNganc7Wo
+        1uUCKQo16Q8nbCMedNGKtfhYLJSCsI0/Suxy9zd00YpZiXXZZSLacc6Xg11cNnkKrrpM131S8TgKc1b8
+        aS6TLrTFYqYqcQ87Eh1SNOvH3do+Tp8dnRNbzcHAO8lcL9EYag+sT9hUoNs8rzZF9zbUs9OLB35ftugJ
+        hU+Jvrv+q/BnaInDrtK0MRszZkwPcrlfSNDQs+WRSYIAAAAASUVORK5CYII=
 </value>
   </data>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

@@ -413,10 +413,12 @@ namespace ImageManager
             forwardBtn.Visible = true;
             rotationBtn.Visible = true;
             deleteBtn.Visible = true;
+            infoBtn.Visible = true;
 
             pictureBox1.Visible = true;
             PictureBox box = (PictureBox)sender;
             deleteBtn.Tag = box.Tag.ToString();
+            pictureBox1.Tag = box.Tag.ToString();
             pictureBox1.BringToFront();
             pictureBox1.Image = Image.FromFile(box.Tag.ToString());
         }
@@ -432,6 +434,7 @@ namespace ImageManager
             forwardBtn.Visible = false;
             configBtn.Visible = true;
             openBtn.Visible = true;
+            infoBtn.Visible = false;
         }
 
         private void forwardBtn_Click(object sender, EventArgs e)
@@ -561,6 +564,12 @@ namespace ImageManager
         private void deleteBtn_MouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip(this.deleteBtn, "Eliminar imagen");
+        }
+
+        private void infoBtn_Click(object sender, EventArgs e)
+        {
+            fInfo frmInfo = new fInfo(pictureBox1);
+            frmInfo.Show();
         }
     }
 }
