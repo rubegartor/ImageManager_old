@@ -17,15 +17,7 @@ namespace ImageManager
 
         private void Config_Load(object sender, EventArgs e)
         {
-            if (File.Exists(Application.StartupPath + "/config.ini"))
-            {
-                var ini = new INI(Application.StartupPath + "/config.ini");
-                mainPathTxt.Text = ini.Read("mainPath");
-            }
-            else
-            {
-                MessageBox.Show("No se ha podido encontrar el fichero de configuración", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            mainPathTxt.Text = Properties.Settings.Default.mainPath;
         }
 
         public void showAlert(string msg, Color color)
@@ -57,9 +49,9 @@ namespace ImageManager
                     {
                         string toWrite = data.SelectedPath.Substring(0, 2);
 
-                        var ini = new INI(Application.StartupPath + "/config.ini");
-                        ini.Write("mainPath", toWrite);
-                        mainPathTxt.Text = toWrite;
+                        Properties.Settings.Default.mainPath = toWrite;
+                        Properties.Settings.Default.Save();
+                        mainPathTxt.Text = Properties.Settings.Default.mainPath;
 
                         showAlert("Ruta guardada con éxito", ColorTranslator.FromHtml("#27ae60"));
 
@@ -67,9 +59,9 @@ namespace ImageManager
                     } else {
                         string toWrite = data.SelectedPath;
 
-                        var ini = new INI(Application.StartupPath + "/config.ini");
-                        ini.Write("mainPath", toWrite);
-                        mainPathTxt.Text = toWrite;
+                        Properties.Settings.Default.mainPath = toWrite;
+                        Properties.Settings.Default.Save();
+                        mainPathTxt.Text = Properties.Settings.Default.mainPath;
 
                         showAlert("Ruta guardada con éxito", ColorTranslator.FromHtml("#27ae60"));
 
