@@ -44,7 +44,7 @@ namespace ImageManager
             
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void exitBtn_Click(object sender, EventArgs e)
         {
             Close();
         }
