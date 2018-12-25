@@ -139,17 +139,17 @@
   <data name="refreshStatusBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="forwardBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

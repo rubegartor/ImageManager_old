@@ -79,7 +79,6 @@
     <Compile Include="fInfo.Designer.cs">
       <DependentUpon>fInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="INI.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
