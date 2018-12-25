@@ -18,7 +18,7 @@ namespace ImageManager
 
         public string mainPath = @"";
         public string selectedPath;
-        public Control rm_lbl;
+        private Control rm_lbl;
 
         public Main()
         {
@@ -42,8 +42,7 @@ namespace ImageManager
 
         static string getMainPath()
         {
-            var ini = new INI(Application.StartupPath + "/config.ini");
-            string mainPath = ini.Read("mainPath");
+            string mainPath = Properties.Settings.Default.mainPath;
             return mainPath;
         }
 
@@ -332,7 +331,7 @@ namespace ImageManager
 
                             string[] date = firsthalf.ToString().Split('/');
                             string yearDir = mainPath + "/" + date[2];
-                            string monthDir = yearDir + "/" + date[1];
+                            string monthDir = yearDir + "/" + date[1]; 
 
                             monthDir = mainPath + "/" + parseDate(monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2), date[2]);
 
@@ -346,7 +345,7 @@ namespace ImageManager
                         }
                         catch (Exception)
                         {
-                            MessageBox.Show("Error con el archivo: " + files[i], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("No se ha podido obtener la fecha del siguiente archivo: " + files[i], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             continue;
                         }
                         continue;
@@ -448,8 +447,7 @@ namespace ImageManager
             data.Description = "[!] Selecciona el dispositivo o carpeta que contiene todas las imágenes.";
             if (data.ShowDialog() == DialogResult.OK)
             {
-                var ini = new INI(Application.StartupPath + "/config.ini");
-                mainPath = ini.Read("mainPath");
+                mainPath = Properties.Settings.Default.mainPath;
                 openBtn.Enabled = false;
                 cancelBtn.Visible = true;
                 selectedPath = data.SelectedPath;
@@ -536,6 +534,12 @@ namespace ImageManager
             getTreeView();
         }
 
+        private void infoBtn_Click(object sender, EventArgs e)
+        {
+            fInfo frmInfo = new fInfo(pictureBox1);
+            frmInfo.Show();
+        }
+
         private void openBtn_MouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip(this.openBtn, "Seleccionar imágenes");
@@ -566,10 +570,9 @@ namespace ImageManager
             toolTip1.SetToolTip(this.deleteBtn, "Eliminar imagen");
         }
 
-        private void infoBtn_Click(object sender, EventArgs e)
+        private void infoBtn_MouseHover(object sender, EventArgs e)
         {
-            fInfo frmInfo = new fInfo(pictureBox1);
-            frmInfo.Show();
+            toolTip1.SetToolTip(this.infoBtn, "Información");
         }
     }
 }

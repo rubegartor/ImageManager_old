@@ -46,9 +46,9 @@
             this.rotationBtn = new System.Windows.Forms.Button();
             this.configBtn = new System.Windows.Forms.Button();
             this.deleteBtn = new System.Windows.Forms.Button();
+            this.infoBtn = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.infoBtn = new System.Windows.Forms.Button();
             this.statusBar.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tools_flowLayoutPanel.SuspendLayout();
@@ -226,6 +226,18 @@
             this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             this.deleteBtn.MouseHover += new System.EventHandler(this.deleteBtn_MouseHover);
             // 
+            // infoBtn
+            // 
+            this.infoBtn.Image = ((System.Drawing.Image)(resources.GetObject("infoBtn.Image")));
+            this.infoBtn.Location = new System.Drawing.Point(387, 3);
+            this.infoBtn.Name = "infoBtn";
+            this.infoBtn.Size = new System.Drawing.Size(58, 48);
+            this.infoBtn.TabIndex = 7;
+            this.infoBtn.UseVisualStyleBackColor = true;
+            this.infoBtn.Visible = false;
+            this.infoBtn.Click += new System.EventHandler(this.infoBtn_Click);
+            this.infoBtn.MouseHover += new System.EventHandler(this.infoBtn_MouseHover);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -238,17 +250,6 @@
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
-            // 
-            // infoBtn
-            // 
-            this.infoBtn.Image = ((System.Drawing.Image)(resources.GetObject("infoBtn.Image")));
-            this.infoBtn.Location = new System.Drawing.Point(387, 3);
-            this.infoBtn.Name = "infoBtn";
-            this.infoBtn.Size = new System.Drawing.Size(58, 48);
-            this.infoBtn.TabIndex = 7;
-            this.infoBtn.UseVisualStyleBackColor = true;
-            this.infoBtn.Visible = false;
-            this.infoBtn.Click += new System.EventHandler(this.infoBtn_Click);
             // 
             // Main
             // 
