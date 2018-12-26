@@ -84,25 +84,16 @@ namespace ImageManager
 
         private void Main_Load(object sender, EventArgs e)
         {
-            if (File.Exists(Application.StartupPath + "/config.ini"))
+            mainPath = getMainPath();
+            if (Directory.Exists(mainPath))
             {
-                mainPath = getMainPath();
-                if (Directory.Exists(mainPath))
-                {
-                    getTreeView();
-                }
-                else
-                {
-                    MessageBox.Show("No se puede acceder a la ruta de guardado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Form frmConfig = new Config(this);
-                    frmConfig.ShowDialog();
-                }
+                getTreeView();
             }
             else
             {
-                string text = "[ImageManager]" + Environment.NewLine + "mainPath = C:";
-                File.WriteAllText(Application.StartupPath + "/config.ini", text);
-                Application.Restart();
+                MessageBox.Show("No se puede acceder a la ruta de guardado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Form frmConfig = new Config(this);
+                frmConfig.ShowDialog();
             }
         }
         private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
