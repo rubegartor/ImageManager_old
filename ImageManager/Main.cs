@@ -202,8 +202,8 @@ namespace ImageManager
 
         static bool IfContains(string data, string type)
         {
-            List<string> lstFormat_all = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".heif", ".webm", ".mp4", ".avi", ".flv" });
-            List<string> lstFormat_images = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".heif"});
+            List<string> lstFormat_all = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".tiff", ".tif", ".heif", ".webm", ".mp4", ".avi", ".flv" });
+            List<string> lstFormat_images = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".tiff", ".tif", ".heif" });
             if(type == "all")
             {
                 foreach (string item in lstFormat_all)
