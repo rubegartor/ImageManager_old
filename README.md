@@ -19,4 +19,5 @@ todas las imágenes y vídeos en el siguiente formato:
 	 - png
 	 - gif
 	 - webp
+	 - tiff
 	 - heif
