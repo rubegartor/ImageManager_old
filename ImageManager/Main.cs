@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace ImageManager
 {
@@ -135,69 +136,98 @@ namespace ImageManager
             }
         }
 
+        public void setFlowLayoutPanelVisible(bool visible) {
+            if (InvokeRequired) {
+                this.Invoke((MethodInvoker)delegate () { setFlowLayoutPanelVisible(visible); });
+                return;
+            }
+            main_flowLayoutPanel.Visible = visible;
+            if (!visible) {
+                main_flowLayoutPanel.Controls.Clear();
+            }
+        }
+
+        public void addMainControl(Control ctrl) {
+            if (InvokeRequired) {
+                this.Invoke((MethodInvoker)delegate () { addMainControl(ctrl); });
+                return;
+            }
+            this.Controls.Add(ctrl);
+            ctrl.BringToFront();
+        }
+
+        public void removeControl(Control ctrl) {
+            if (InvokeRequired) {
+                this.Invoke((MethodInvoker)delegate () { removeControl(ctrl); });
+                return;
+            }
+            ctrl.Dispose();
+        }
+
+        public void addFlowLayoutPanelImage(Control ctrl) {
+            if (InvokeRequired) {
+                this.Invoke((MethodInvoker)delegate () { addFlowLayoutPanelImage(ctrl); });
+                return;
+            }
+            main_flowLayoutPanel.Controls.Add(ctrl);
+        }
+
         private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (rm_lbl != null)
+            new Thread(() =>
             {
-                rm_lbl.Dispose();
-            }
+                Thread.CurrentThread.IsBackground = true;
 
-            Label charging = new Label();
-            charging.Text = "Cargando...";
-            charging.Font = new Font("Segoe UI", 32);
-            charging.BackColor = Color.Transparent;
-            charging.Size = new Size(247, 57);
-            charging.Location = new Point((this.Width - charging.Width + treeView.Width) / 2, (this.Height - charging.Height - groupBox1.Height) / 2);
-
-            main_flowLayoutPanel.Visible = false;
-            main_flowLayoutPanel.Controls.Clear();
-
-            this.Controls.Add(charging);
-            charging.BringToFront();
-
-            string[] files = Directory.GetFiles(e.Node.Tag.ToString());
-
-            if (files.Length > 0)
-            {
-                for (int i = 0; i < files.Length; i++)
-                {
-                    if (new FileInfo(files[i]).Length > 0)
-                    {
-                        PictureBox imgCtrl = new PictureBox();
-                        if (IfContains(files[i], "image"))
-                        {
-                            imgCtrl.Image = Image.FromFile(files[i]).GetThumbnailImage(640, 360, null, IntPtr.Zero);
-                            imgCtrl.Size = new Size(200, 113);
-                            imgCtrl.Tag = files[i];
-                            imgCtrl.SizeMode = PictureBoxSizeMode.Zoom;
-                            imgCtrl.Click += new EventHandler(SeeImg);
-                            main_flowLayoutPanel.Controls.Add(imgCtrl);
-                        }
-                        alzheimer();
-                    }
+                if (rm_lbl != null) {
+                    rm_lbl.Dispose();
                 }
-                charging.Dispose();
-                main_flowLayoutPanel.Visible = true;
-            }
-            else
-            {
-                charging.Dispose();
 
-                Label empty = new Label();
-                empty.Text = "Carpeta Vacía";
-                empty.Font = new Font("Segoe UI", 32);
-                empty.BackColor = Color.Transparent;
-                empty.Size = new Size(290, 57);
-                empty.Location = new Point((this.Width - empty.Width + treeView.Width) / 2, (this.Height - empty.Height - groupBox1.Height) / 2);
+                Label charging = new Label();
+                charging.Text = "Cargando...";
+                charging.Font = new Font("Segoe UI", 32);
+                charging.BackColor = Color.Transparent;
+                charging.Size = new Size(247, 57);
+                charging.Location = new Point((this.Width - charging.Width + treeView.Width) / 2, (this.Height - charging.Height - groupBox1.Height) / 2);
 
-                main_flowLayoutPanel.Visible = false;
-                main_flowLayoutPanel.Controls.Clear();
+                setFlowLayoutPanelVisible(false);
 
-                rm_lbl = empty;
+                addMainControl(charging);
+                string[] files = Directory.GetFiles(e.Node.Tag.ToString());
 
-                this.Controls.Add(empty);
-                charging.BringToFront();
-            }
+                if (files.Length > 0) {
+                    for (int i = 0; i < files.Length; i++) {
+                        if (new FileInfo(files[i]).Length > 0) {
+                            PictureBox imgCtrl = new PictureBox();
+                            if (IfContains(files[i], "image")) {
+                                imgCtrl.Image = Image.FromFile(files[i]).GetThumbnailImage(640, 360, null, IntPtr.Zero);
+                                imgCtrl.Size = new Size(200, 113);
+                                imgCtrl.Tag = files[i];
+                                imgCtrl.SizeMode = PictureBoxSizeMode.Zoom;
+                                imgCtrl.Click += new EventHandler(SeeImg);
+                                addFlowLayoutPanelImage(imgCtrl);
+                            }
+                            alzheimer();
+                        }
+                    }
+                    removeControl(charging);
+                    setFlowLayoutPanelVisible(true);
+                } else {
+                    charging.Dispose();
+
+                    Label empty = new Label();
+                    empty.Text = "Carpeta Vacía";
+                    empty.Font = new Font("Segoe UI", 32);
+                    empty.BackColor = Color.Transparent;
+                    empty.Size = new Size(290, 57);
+                    empty.Location = new Point((this.Width - empty.Width + treeView.Width) / 2, (this.Height - empty.Height - groupBox1.Height) / 2);
+
+                    setFlowLayoutPanelVisible(false);
+
+                    rm_lbl = empty;
+
+                    addMainControl(empty);
+                }
+            }).Start();
         }
 
         static bool IfContains(string data, string type)
