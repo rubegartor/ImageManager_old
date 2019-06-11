@@ -10,10 +10,8 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace ImageManager
-{
-    public partial class Main : Form
-    {
+namespace ImageManager {
+    public partial class Main : Form {
         [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
         private static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
 
@@ -21,52 +19,39 @@ namespace ImageManager
         public string selectedPath;
         private Control rm_lbl;
 
-        public Main()
-        {
+        public Main() {
             InitializeComponent();
         }
 
-        public static void alzheimer()
-        {
-            try
-            {
+        public static void alzheimer() {
+            try {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
-            }
-            catch(Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show("Critical Error reading memory", "Oops", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             }
         }
 
-        static string getMainPath()
-        {
+        static string getMainPath() {
             string mainPath = Properties.Settings.Default.mainPath;
             return mainPath;
         }
 
-        public void getTreeView()
-        {
+        public void getTreeView() {
             mainPath = getMainPath();
-            if (Directory.Exists(mainPath))
-            {
+            if (Directory.Exists(mainPath)) {
                 DirectoryInfo di = new DirectoryInfo(mainPath);
-                foreach (DirectoryInfo d in di.GetDirectories())
-                {
+                foreach (DirectoryInfo d in di.GetDirectories()) {
                     treeView.Nodes.Clear();
                     string[] drives = Directory.GetDirectories(mainPath);
 
-                    foreach (string drive in drives)
-                    {
+                    foreach (string drive in drives) {
                         DirectoryInfo dir = new DirectoryInfo(drive);
-                        if (((dir.Attributes & FileAttributes.System) != FileAttributes.System) || ((dir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden))
-                        {
-                            if (Regex.IsMatch(drive.Substring(drive.Length - 4, 4), "^(19|20)[0-9][0-9]"))
-                            {
-                                TreeNode node = new TreeNode(Path.GetFileName(drive))
-                                {
+                        if (((dir.Attributes & FileAttributes.System) != FileAttributes.System) || ((dir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)) {
+                            if (Regex.IsMatch(drive.Substring(drive.Length - 4, 4), "^(19|20)[0-9][0-9]")) {
+                                TreeNode node = new TreeNode(Path.GetFileName(drive)) {
                                     Tag = drive
                                 };
 
@@ -76,59 +61,44 @@ namespace ImageManager
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 treeView.Nodes.Clear();
             }
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {
+        private void Main_Load(object sender, EventArgs e) {
             mainPath = getMainPath();
-            if (Directory.Exists(mainPath))
-            {
+            if (Directory.Exists(mainPath)) {
                 getTreeView();
-            }
-            else
-            {
+            } else {
                 MessageBox.Show("No se puede acceder a la ruta de guardado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Form frmConfig = new Config(this);
                 frmConfig.ShowDialog();
             }
         }
-        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
-        {
-            if (e.Node.Nodes.Count > 0)
-            {
-                if (e.Node.Nodes[0].Text == "..." && e.Node.Nodes[0].Tag == null)
-                {
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e) {
+            if (e.Node.Nodes.Count > 0) {
+                if (e.Node.Nodes[0].Text == "..." && e.Node.Nodes[0].Tag == null) {
                     e.Node.Nodes.Clear();
 
                     //get the list of sub directories
                     string[] dirs = Directory.GetDirectories(e.Node.Tag.ToString());
 
-                    foreach (string dir in dirs)
-                    {
+                    foreach (string dir in dirs) {
                         DirectoryInfo di = new DirectoryInfo(dir);
                         TreeNode node = new TreeNode(di.Name, 0, 1);
 
-                        try
-                        {
+                        try {
                             //keep the directory's full path in the tag for use later
                             node.Tag = dir;
 
                             //if the directory has sub directories add the place holder
                             if (di.GetDirectories().Count() > 0)
                                 node.Nodes.Add(null, "...", 0, 0);
-                        }
-                        catch (Exception ex)
-                        {
+                        } catch (Exception ex) {
                             MessageBox.Show(ex.Message, "DirectoryLister",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        finally
-                        {
+                        } finally {
                             e.Node.Nodes.Add(node);
                         }
                     }
@@ -172,14 +142,12 @@ namespace ImageManager
             main_flowLayoutPanel.Controls.Add(ctrl);
         }
 
-        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            new Thread(() =>
-            {
+        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) {
+            new Thread(() => {
                 Thread.CurrentThread.IsBackground = true;
 
                 if (rm_lbl != null) {
-                    rm_lbl.Dispose();
+                    removeControl(rm_lbl);
                 }
 
                 Label charging = new Label();
@@ -212,7 +180,7 @@ namespace ImageManager
                     removeControl(charging);
                     setFlowLayoutPanelVisible(true);
                 } else {
-                    charging.Dispose();
+                    removeControl(charging);
 
                     Label empty = new Label();
                     empty.Text = "Carpeta Vacía";
@@ -230,24 +198,18 @@ namespace ImageManager
             }).Start();
         }
 
-        static bool IfContains(string data, string type)
-        {
+        static bool IfContains(string data, string type) {
             List<string> lstFormat_all = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".tiff", ".tif", ".heif", ".webm", ".mp4", ".avi", ".flv" });
             List<string> lstFormat_images = new List<string>(new string[] { ".jpg", ".bmp", ".png", ".jpeg", ".gif", ".webp", ".tiff", ".tif", ".heif" });
-            if(type == "all")
-            {
-                foreach (string item in lstFormat_all)
-                {
-                    if (data.Contains(item))
-                    {
+            if (type == "all") {
+                foreach (string item in lstFormat_all) {
+                    if (data.Contains(item)) {
                         return true;
                     }
                 }
-            }else{
-                foreach (string item in lstFormat_images)
-                {
-                    if (data.Contains(item))
-                    {
+            } else {
+                foreach (string item in lstFormat_images) {
+                    if (data.Contains(item)) {
                         return true;
                     }
                 }
@@ -255,11 +217,9 @@ namespace ImageManager
             return false;
         }
 
-        public static string parseDate(string monthDir, string yearDir)
-        {
+        public static string parseDate(string monthDir, string yearDir) {
             string res = "";
-            switch (monthDir)
-            {
+            switch (monthDir) {
                 case "01":
                     res = yearDir + "/" + monthDir + " (ene)";
                     break;
@@ -301,20 +261,15 @@ namespace ImageManager
             return res;
         }
 
-        private void bgWrk1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
+        private void bgWrk1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
             string[] files = Directory.GetFiles(selectedPath);
-            for (int i = 0; i < files.Length; i++)
-            {
-                if (bgWrk1.CancellationPending)
-                {
+            for (int i = 0; i < files.Length; i++) {
+                if (bgWrk1.CancellationPending) {
                     break;
                 }
 
-                if (IfContains(files[i], "all"))
-                {
-                    try
-                    {
+                if (IfContains(files[i], "all")) {
+                    try {
                         Image myImage = Image.FromFile(files[i]);
                         PropertyItem propItem = myImage.GetPropertyItem(36867); //Date taken 
 
@@ -327,21 +282,17 @@ namespace ImageManager
                         string yearDir = mainPath + "/" + date[0];
                         string monthDir = yearDir + "/" + date[1];
 
-                        monthDir = mainPath  + "/" + parseDate(monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2), date[0]);
+                        monthDir = mainPath + "/" + parseDate(monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2), date[0]);
 
                         Directory.CreateDirectory(yearDir);
                         Directory.CreateDirectory(monthDir);
 
-                        if (!File.Exists(monthDir + "/" + Path.GetFileName(files[i])))
-                        {
+                        if (!File.Exists(monthDir + "/" + Path.GetFileName(files[i]))) {
                             File.Copy(files[i], monthDir + "/" + Path.GetFileName(files[i]));
                         }
                         alzheimer();
-                    }
-                    catch (Exception)
-                    {
-                        try
-                        {
+                    } catch (Exception) {
+                        try {
                             FileInfo fileInfo = new FileInfo(files[i]);
                             DateTime lastWriteTime = fileInfo.LastWriteTime;
 
@@ -352,20 +303,17 @@ namespace ImageManager
 
                             string[] date = firsthalf.ToString().Split('/');
                             string yearDir = mainPath + "/" + date[2];
-                            string monthDir = yearDir + "/" + date[1]; 
+                            string monthDir = yearDir + "/" + date[1];
 
                             monthDir = mainPath + "/" + parseDate(monthDir.Substring(Path.GetDirectoryName(monthDir).Length + 1, 2), date[2]);
 
                             Directory.CreateDirectory(yearDir);
                             Directory.CreateDirectory(monthDir);
-                            if (!File.Exists(monthDir + "/" + Path.GetFileName(files[i])))
-                            {
+                            if (!File.Exists(monthDir + "/" + Path.GetFileName(files[i]))) {
                                 File.Copy(files[i], monthDir + "/" + Path.GetFileName(files[i]));
                             }
                             alzheimer();
-                        }
-                        catch (Exception)
-                        {
+                        } catch (Exception) {
                             MessageBox.Show("No se ha podido obtener la fecha del siguiente archivo: " + files[i], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             continue;
                         }
@@ -377,23 +325,17 @@ namespace ImageManager
             }
         }
 
-        private void bgWrk1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
+        private void bgWrk1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
             cancelBtn.Visible = false;
-            if (Directory.Exists(mainPath))
-            {
+            if (Directory.Exists(mainPath)) {
                 treeView.Nodes.Clear();
                 string[] drives = Directory.GetDirectories(mainPath);
 
-                foreach (string drive in drives)
-                {
+                foreach (string drive in drives) {
                     DirectoryInfo dir = new DirectoryInfo(drive);
-                    if (((dir.Attributes & FileAttributes.System) != FileAttributes.System) || ((dir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden))
-                    {
-                        if(Regex.IsMatch(drive.Substring(drive.Length - 4, 4), "^(19|20)[0-9][0-9]"))
-                        {
-                            TreeNode node = new TreeNode(drive.Substring(drive.Length - 4, 4))
-                            {
+                    if (((dir.Attributes & FileAttributes.System) != FileAttributes.System) || ((dir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)) {
+                        if (Regex.IsMatch(drive.Substring(drive.Length - 4, 4), "^(19|20)[0-9][0-9]")) {
+                            TreeNode node = new TreeNode(drive.Substring(drive.Length - 4, 4)) {
                                 Tag = drive
                             };
 
@@ -402,9 +344,7 @@ namespace ImageManager
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 treeView.Nodes.Clear();
             }
 
@@ -416,8 +356,7 @@ namespace ImageManager
             MessageBox.Show("Se han procesado todas las imágenes", "Procesamiento terminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void bgWrk1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        {
+        private void bgWrk1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
             loadStatusBarLabel.Visible = true;
             progressStatusBar.Visible = true;
             string[] files = Directory.GetFiles(selectedPath);
@@ -426,8 +365,7 @@ namespace ImageManager
             loadStatusBarLabel.Text = "Cargando... " + "[" + e.ProgressPercentage + "/" + files.Length + "]";
         }
 
-        private void SeeImg(object sender, EventArgs e)
-        {
+        private void SeeImg(object sender, EventArgs e) {
             openBtn.Visible = false;
             configBtn.Visible = false;
             forwardBtn.Visible = true;
@@ -443,8 +381,7 @@ namespace ImageManager
             pictureBox1.Image = Image.FromFile(box.Tag.ToString());
         }
 
-        public void hidePic()
-        {
+        public void hidePic() {
             pictureBox1.Image.Dispose();
             pictureBox1.Image = null;
             pictureBox1.SendToBack();
@@ -457,17 +394,14 @@ namespace ImageManager
             infoBtn.Visible = false;
         }
 
-        private void forwardBtn_Click(object sender, EventArgs e)
-        {
+        private void forwardBtn_Click(object sender, EventArgs e) {
             hidePic();
         }
 
-        private void openBtn_Click(object sender, EventArgs e)
-        {
+        private void openBtn_Click(object sender, EventArgs e) {
             FolderBrowserDialog data = new FolderBrowserDialog();
             data.Description = "[!] Selecciona el dispositivo o carpeta que contiene todas las imágenes.";
-            if (data.ShowDialog() == DialogResult.OK)
-            {
+            if (data.ShowDialog() == DialogResult.OK) {
                 mainPath = Properties.Settings.Default.mainPath;
                 openBtn.Enabled = false;
                 cancelBtn.Visible = true;
@@ -478,39 +412,30 @@ namespace ImageManager
             }
         }
 
-        private void rotationBtn_Click(object sender, EventArgs e)
-        {
-            if(pictureBox1.Image != null)
-            {
+        private void rotationBtn_Click(object sender, EventArgs e) {
+            if (pictureBox1.Image != null) {
                 Image pic = pictureBox1.Image;
                 pic.RotateFlip(RotateFlipType.Rotate90FlipNone);
                 pictureBox1.Image = pic;
             }
         }
 
-        private void configBtn_Click(object sender, EventArgs e)
-        {
+        private void configBtn_Click(object sender, EventArgs e) {
             Config fc = Application.OpenForms["Config"] != null ? (Config)Application.OpenForms["Config"] : null;
-            if (fc == null)
-            {
+            if (fc == null) {
                 Config frmConfig = new Config(this);
                 frmConfig.Show();
             }
         }
 
-        private void deleteBtn_Click(object sender, EventArgs e)
-        {
-            foreach(Control ctrl in main_flowLayoutPanel.Controls)
-            {
-                if (ctrl.Tag.ToString() == deleteBtn.Tag.ToString())
-                {
+        private void deleteBtn_Click(object sender, EventArgs e) {
+            foreach (Control ctrl in main_flowLayoutPanel.Controls) {
+                if (ctrl.Tag.ToString() == deleteBtn.Tag.ToString()) {
                     DialogResult dr = MessageBox.Show("¿Estas seguro que quieres eliminar esta imagen?", "Eliminar Imagen", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                    if (dr == DialogResult.OK)
-                    {
+                    if (dr == DialogResult.OK) {
                         ctrl.Dispose();
                         hidePic();
-                        if(File.Exists(ctrl.Tag.ToString()))
-                        {
+                        if (File.Exists(ctrl.Tag.ToString())) {
                             alzheimer();
                             File.Delete(ctrl.Tag.ToString());
                         }
@@ -520,79 +445,63 @@ namespace ImageManager
             }
         }
 
-        private void cancelBtn_Click(object sender, EventArgs e)
-        {
+        private void cancelBtn_Click(object sender, EventArgs e) {
             DialogResult dr = MessageBox.Show("¿Estas seguro que quieres cancelar el proceso?\n No se eliminarán los datos creados hasta el momento", "Cancelar Proceso", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
-            if(dr == DialogResult.OK)
-            {
+            if (dr == DialogResult.OK) {
                 bgWrk1.CancelAsync();
                 cancelBtn.Visible = false;
                 openBtn.Enabled = true;
             }
         }
 
-        private void Main_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if(bgWrk1.IsBusy)
-            {
+        private void Main_FormClosing(object sender, FormClosingEventArgs e) {
+            if (bgWrk1.IsBusy) {
                 DialogResult dr = MessageBox.Show("Hay procesos ejecutandose, ¿estas seguro que quieres finalizar el proceso?", "Cerrar Programa", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
-                if (dr == DialogResult.Cancel)
-                {
+                if (dr == DialogResult.Cancel) {
                     e.Cancel = true;
-                }
-                else
-                {
+                } else {
                     Environment.Exit(0);
                 }
             }
         }
 
-        private void refreshStatusBtn_Click(object sender, EventArgs e)
-        {
+        private void refreshStatusBtn_Click(object sender, EventArgs e) {
             treeView.Nodes.Clear();
             getTreeView();
         }
 
-        private void infoBtn_Click(object sender, EventArgs e)
-        {
+        private void infoBtn_Click(object sender, EventArgs e) {
             fInfo frmInfo = new fInfo(pictureBox1);
             frmInfo.Show();
         }
 
-        private void openBtn_MouseHover(object sender, EventArgs e)
-        {
+        private void openBtn_MouseHover(object sender, EventArgs e) {
             toolTip1.SetToolTip(this.openBtn, "Seleccionar imágenes");
         }
 
-        private void cancelBtn_MouseHover(object sender, EventArgs e)
-        {
+        private void cancelBtn_MouseHover(object sender, EventArgs e) {
             toolTip1.SetToolTip(this.cancelBtn, "Cancelar proceso");
         }
 
-        private void forwardBtn_MouseHover(object sender, EventArgs e)
-        {
+        private void forwardBtn_MouseHover(object sender, EventArgs e) {
             toolTip1.SetToolTip(this.forwardBtn, "Volver");
         }
 
-        private void rotationBtn_MouseHover(object sender, EventArgs e)
-        {
+        private void rotationBtn_MouseHover(object sender, EventArgs e) {
             toolTip1.SetToolTip(this.rotationBtn, "Rotar imagen");
         }
 
-        private void configBtn_MouseHover(object sender, EventArgs e)
-        {
+        private void configBtn_MouseHover(object sender, EventArgs e) {
             toolTip1.SetToolTip(this.configBtn, "Configuración");
         }
 
-        private void deleteBtn_MouseHover(object sender, EventArgs e)
-        {
+        private void deleteBtn_MouseHover(object sender, EventArgs e) {
             toolTip1.SetToolTip(this.deleteBtn, "Eliminar imagen");
         }
 
-        private void infoBtn_MouseHover(object sender, EventArgs e)
-        {
+        private void infoBtn_MouseHover(object sender, EventArgs e) {
             toolTip1.SetToolTip(this.infoBtn, "Información");
         }
     }
