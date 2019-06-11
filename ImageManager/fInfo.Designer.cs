@@ -78,7 +78,7 @@
             // fileExt
             // 
             this.fileExt.AutoSize = true;
-            this.fileExt.Location = new System.Drawing.Point(79, 78);
+            this.fileExt.Location = new System.Drawing.Point(79, 76);
             this.fileExt.Name = "fileExt";
             this.fileExt.Size = new System.Drawing.Size(35, 13);
             this.fileExt.TabIndex = 4;
@@ -86,7 +86,7 @@
             // 
             // exitBtn
             // 
-            this.exitBtn.Location = new System.Drawing.Point(218, 106);
+            this.exitBtn.Location = new System.Drawing.Point(218, 105);
             this.exitBtn.Name = "exitBtn";
             this.exitBtn.Size = new System.Drawing.Size(75, 23);
             this.exitBtn.TabIndex = 5;
@@ -98,7 +98,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(305, 141);
+            this.ClientSize = new System.Drawing.Size(305, 140);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.fileExt);
             this.Controls.Add(this.fileDimensions);

@@ -15,12 +15,12 @@ namespace ImageManager
             InitializeComponent();
         }
 
-        static double ConvertBytesToMegabytes(long bytes)
+        private static double ConvertBytesToMegabytes(long bytes)
         {
             return (bytes / 1024f) / 1024f;
         }
 
-        public Tuple<int, int> getSizes(string path)
+        private Tuple<int, int> getSizes(string path)
         {
             using (Stream stream = File.OpenRead(path))
             {
